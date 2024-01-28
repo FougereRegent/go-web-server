@@ -39,8 +39,6 @@ func ParseString(content []byte) (*Request, error) {
 		return nil, errors.New("Verb not recognize")
 	}
 
-	fmt.Println(v)
-
 	nb++
 
 	path, size_path := getPath(content[nb:])
@@ -50,8 +48,6 @@ func ParseString(content []byte) (*Request, error) {
 
 	nb += size_path + 1
 
-	fmt.Println(path)
-
 	version, size_version := getVersion(content[nb:])
 	if size_version < 0 {
 		return nil, errors.New("Not recognized http version")
@@ -59,23 +55,18 @@ func ParseString(content []byte) (*Request, error) {
 
 	nb += size_version + 2
 
-	fmt.Println(version)
-
 	header, size_header := getHeader(content[nb:])
+
 	if size_header < 0 {
 		return nil, errors.New("Header not recognize")
 	}
 
-	for key, val := range header {
-		fmt.Printf("%s:%s", key, val)
-	}
-
 	return &Request{
-		Verb:   v,
-		Path:   path,
-		Header: header,
-		Body:   "",
-	}, nil
+		Verb:        v,
+		Path:        path,
+		Header:      header,
+		Body:        "test",
+		HttpVersion: version}, nil
 }
 
 func getVerb(content []byte) (Verb, int) {
@@ -137,29 +128,20 @@ func getVersion(content []byte) (string, int) {
 
 func getHeader(content []byte) (Header, int) {
 	data := strings.TrimLeft(string(content), "\r\n\r\n")
+	data = strings.ReplaceAll(data, "\r\n\r\n", "")
 	tab := strings.Split(data, "\r\n")
 	result := make(Header)
 
-	fmt.Println(data[0 : len(data)-4])
-
-	if len(tab) <= 1 {
+	if len(tab) < 1 {
 		return nil, -1
 	}
 
 	for _, value := range tab {
 		head := strings.Split(value, ":")
-		if len(head) <= 1 {
-			return nil, -1
-		}
-
-		result[head[0]] = strings.TrimSpace(head[1])
+		result[head[0]] = strings.TrimSpace(strings.Join(head[1:], ":"))
 	}
 
 	return result, len(data)
-}
-
-func getBody(content []byte) (string, int) {
-	return "", 0
 }
 
 func findIndex(content []byte, element byte) int {
@@ -169,4 +151,8 @@ func findIndex(content []byte, element byte) int {
 		}
 	}
 	return -1
+}
+
+func getBody(content []byte) string {
+	return string(content)
 }
