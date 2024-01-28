@@ -57,8 +57,6 @@ func RecvMessage(con net.Conn) ([]byte, error) {
 	result := make([]byte, MESSAGE_SIZE)
 	total_byte := 0
 
-	defer con.Close()
-
 	for {
 		buffer := make([]byte, MESSAGE_SIZE)
 		nb_byte, err := con.Read(buffer)
@@ -81,6 +79,17 @@ func RecvMessage(con net.Conn) ([]byte, error) {
 			result = append(result, buffer...)
 		}
 	}
-
 	return result, nil
+}
+
+func SendMessage(con net.Conn, message string) error {
+	_, err := con.Write([]byte(message))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func CloseConnection(con net.Conn) {
+	con.Close()
 }
