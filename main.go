@@ -33,8 +33,6 @@ func main() {
 		os.Exit(-1)
 	}
 
-	_, err = web.ParseString(content)
-
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
