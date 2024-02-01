@@ -98,4 +98,16 @@ const (
 	BLOCKED_BY_WINDOWS_PARENTAL_CONTROLS HttpResponse = 450
 	UNAVAILABLE_FOR_LEGAL_REASONS        HttpResponse = 451
 	UNRECOVERABLE_ERROR                  HttpResponse = 456
+	INTERNAL_SERVER_ERROR                HttpResponse = 500
+	NOT_IMPLEMENTED                      HttpResponse = 501
+	BAD_GATEWAY                          HttpResponse = 502
+	SERVICE_UNAVAILABLE                  HttpResponse = 503
+	GATEWAY_TIME_OUT                     HttpResponse = 504
+	HTTP_VERSION_NOT_SUPPORTED           HttpResponse = 505
+	VARIANT_ALSO_NEGOTIATES              HttpResponse = 506
+	INSUFFICIENT_STORAGE                 HttpResponse = 507
+	LOOP_DETECTED                        HttpResponse = 508
+	BANDWIDTH_LIMIT_EXCEEDED             HttpResponse = 509
+	NOT_EXTENDED                         HttpResponse = 510
+	NETWORK_AUTHENTICATION_REQUIRED      HttpResponse = 511
 )
