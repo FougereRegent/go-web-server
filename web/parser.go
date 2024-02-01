@@ -129,3 +129,29 @@ func findIndex(content []byte, element byte) int {
 func getBody(content []byte) string {
 	return string(content)
 }
+
+func CreateResponse(response Response) string {
+	const head = "HTTP/1.1 %d\r\n"
+	var result string
+
+	result = fmt.Sprintf(head, response.HttpStatus)
+
+	headers := buildHeader(response.HeaderResponse)
+	result += headers
+
+	result += "\r\n\r\n"
+	result += *response.Body
+
+	return result
+}
+
+func buildHeader(headers Header) string {
+	var result string
+
+	for key, val := range headers {
+		header := key + ":" + val + "\r\n"
+		result += header
+	}
+
+	return result
+}
