@@ -10,11 +10,24 @@ func main() {
 	fmt.Println("=== Web Server ===")
 
 	router := web.CreateRouter("0.0.0.0", 8080)
-	router.AddRoute(web.GET, "/", func(req web.Request) string {
-		return "Hello World"
+	router.AddRoute(web.GET, "/", func(req web.Request) web.Response {
+
+		header := make(web.Header)
+		header["server-name"] = "go-http"
+		return web.Response{
+			HttpStatus:     web.OK,
+			HeaderResponse: header,
+			Body:           "<h1>Hello World</h1>",
+		}
 	})
-	router.AddRoute(web.GET, "/version", func(req web.Request) string {
-		return "v1.0"
+	router.AddRoute(web.GET, "/version", func(req web.Request) web.Response {
+		header := make(web.Header)
+		header["server-name"] = "go-http"
+		return web.Response{
+			HttpStatus:     web.OK,
+			HeaderResponse: header,
+			Body:           "<h1>V1.0.0</h1>",
+		}
 	})
 
 	err := router.Run()

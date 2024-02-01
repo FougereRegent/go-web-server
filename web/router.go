@@ -5,7 +5,7 @@ import (
 	"web-server/communication"
 )
 
-type RouteDictionary map[string]func(req Request) string
+type RouteDictionary map[string]func(req Request) Response
 
 type DefaultRouter struct {
 	Port int
@@ -13,18 +13,22 @@ type DefaultRouter struct {
 	_dic RouteDictionary
 }
 
-func (router *DefaultRouter) AddRoute(verb Verb, path string, callback func(req Request) string) error {
+func (router *DefaultRouter) AddRoute(verb Verb, path string, callback func(req Request) Response) error {
 	key := buildKey(verb, path)
 	router._dic[key] = callback
 	return nil
 }
 
-func (router *DefaultRouter) router(request *Request) string {
+func (router *DefaultRouter) router(request *Request) Response {
 	key := buildKey(request.Verb, request.Path)
 	if callbak, ok := router._dic[key]; ok {
 		return callbak(*request)
 	}
-	return "Not Found"
+	return Response{
+		HttpStatus:     NOT_FOUND,
+		Body:           "<h1>Not Found</h1>",
+		HeaderResponse: nil,
+	}
 }
 
 func (router *DefaultRouter) Run() error {
@@ -57,7 +61,8 @@ func (router *DefaultRouter) Run() error {
 		}
 
 		result := router.router(req)
-		communication.SendMessage(con, result)
+		str_result := CreateResponse(result)
+		communication.SendMessage(con, str_result)
 		communication.CloseConnection(con)
 	}
 	return nil
