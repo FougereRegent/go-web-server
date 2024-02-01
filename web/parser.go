@@ -6,33 +6,6 @@ import (
 	"strings"
 )
 
-type Verb string
-type Header map[string]string
-
-const (
-	GET       Verb = "GET"
-	PUT       Verb = "PUT"
-	DELETE    Verb = "DELETE"
-	POST      Verb = "POST"
-	HEAD      Verb = "HEAD"
-	UNDEFINED Verb = "UNDEFINED"
-)
-
-const (
-	HTTP_1_1 string = "1.1"
-	HTTP_1_0 string = "1.0"
-	HTTP_2_0 string = "2.0"
-	HTTP_3_0 string = "3.0"
-)
-
-const (
-	LEN_GET    int = len(GET)
-	LEN_PUT    int = len(PUT)
-	LEN_DELETE int = len(DELETE)
-	LEN_POST   int = len(POST)
-	LEN_HEAD   int = len(HEAD)
-)
-
 func ParseString(content []byte) (*Request, error) {
 	v, nb := getVerb(content)
 	if nb < 0 {
