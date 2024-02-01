@@ -140,7 +140,7 @@ func CreateResponse(response Response) string {
 	result += headers
 
 	result += "\r\n\r\n"
-	result += response.Body
+	result += string(response.Body)
 
 	return result
 }

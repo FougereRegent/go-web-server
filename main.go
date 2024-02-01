@@ -14,10 +14,16 @@ func main() {
 
 		header := make(web.Header)
 		header["server-name"] = "go-http"
+
+		file, _ := os.Open("test.jpg")
+
+		res := make([]byte, 2000000)
+		file.Read(res)
+
 		return web.Response{
 			HttpStatus:     web.OK,
 			HeaderResponse: header,
-			Body:           "<h1>Hello World</h1>",
+			Body:           res,
 		}
 	})
 	router.AddRoute(web.GET, "/version", func(req web.Request) web.Response {
@@ -26,7 +32,7 @@ func main() {
 		return web.Response{
 			HttpStatus:     web.OK,
 			HeaderResponse: header,
-			Body:           "<h1>V1.0.0</h1>",
+			Body:           []byte("<h1>V1.0.0</h1>"),
 		}
 	})
 

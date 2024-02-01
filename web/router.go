@@ -26,7 +26,7 @@ func (router *DefaultRouter) router(request *Request) Response {
 	}
 	return Response{
 		HttpStatus:     NOT_FOUND,
-		Body:           "<h1>Not Found</h1>",
+		Body:           nil,
 		HeaderResponse: nil,
 	}
 }

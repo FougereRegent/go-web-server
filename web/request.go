@@ -15,7 +15,7 @@ type Request struct {
 type Response struct {
 	HttpStatus     HttpResponse
 	HeaderResponse Header
-	Body           string
+	Body           []byte
 }
 
 const (
